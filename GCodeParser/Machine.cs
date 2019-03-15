@@ -12,6 +12,10 @@ namespace GCodeParser
         float Y { get; set; }
         float Z { get; set; }
 
+        float VelocityX { get; set; }
+        float VelocityY { get; set; }
+        float VelocityZ { get; set; }
+
         float MaxVelocityX { get; set; }
         float MaxVelocityY { get; set; }
         float MaxVelocityZ { get; set; }
