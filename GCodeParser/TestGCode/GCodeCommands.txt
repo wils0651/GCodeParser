@@ -1,0 +1,41 @@
+
+G91 X0 Y0;
+
+
+
+==== Z Tool Probe ====
+
+G20 G38.2 Z-1 F2; G10 L20 P1 Z0.782; G0 Z0.125
+
+Which is:   
+G20 = Inches  
+G38.2 = Move until interrupted by the probe  
+Z-1 = Z-axis travels 1 inch (I always manually jog, to within 1" of my desired height, because...)  
+F2 = 2"/minute (dead slow)  
+  
+Then (the macros allow more than one command, separated by ';'  
+G10 L20 P1 = Set G54 workspace coordinates  
+Z0.782 = The thickness of my touch plate (inches)  
+  
+Then  
+G0 Z0.125 = Rapid move to 0.125" to release the probe. 
+
+
+
+==== Sets the machine zero ====
+
+G10 L20 P1 X0 Y0
+
+Type $# to see your saved locations.   
+At any point, type G54, and you are now working in this workspace.   
+  
+So, on starting your machine, you'd send:  
+$H  
+G54   
+x0y0z0  
+  
+You'll home your machine, switch to the G54 workspace, and go to your zero position. Any program you send will now use these coordinates as their zero. (Be aware that if your program ends with an M30 line, it'll switch back to the global positioning, so you'll need to type G54 again to get back into the workspace.) 
+
+G54
+
+
