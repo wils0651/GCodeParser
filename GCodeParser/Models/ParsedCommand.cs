@@ -2,8 +2,8 @@
 {
     public class ParsedCommand
     {
-        string GCodeCommand { get; set; }
-        string ParameterString { get; set; }
+        public string GCodeCommand { get; set; }
+        public string ParameterString { get; set; }
 
         public ParsedCommand(string command, string parameters)
         {

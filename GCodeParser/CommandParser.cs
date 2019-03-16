@@ -17,9 +17,32 @@ namespace GCodeParser
         public ParsedCommand ParseCommand(string line)
         {
             string command = "NOP";
+
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                return new ParsedCommand(command, line);
+            }
             // Parse
-            // split
             // look at first char, if invalid 
+            string firstChar = line.Substring(0, 1);
+            if (_validCommandPrefixes.Contains(firstChar))
+            {
+                command = firstChar;
+                int characterCount = 1;
+                bool isNumeral = true;
+                while (isNumeral && characterCount < line.Length)
+                {
+                    string character = line.Substring(characterCount, 1);
+                    int numeral;
+                    isNumeral = int.TryParse(character, out numeral);
+                    if (isNumeral)
+                    {
+                        command += character;
+                        characterCount++;
+                    }
+                }
+                line = line.Substring(characterCount).Trim();
+            }
 
             return new ParsedCommand(command, line);
         }
