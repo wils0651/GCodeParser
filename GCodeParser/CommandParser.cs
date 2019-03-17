@@ -10,7 +10,7 @@ namespace GCodeParser
 
         public CommandParser()
         {
-            var commands = new string[] { "G", "M" };
+            var commands = new string[] { "G", "M", "T" };
             _validCommandPrefixes = new HashSet<string>(commands);
         }
 
@@ -25,6 +25,13 @@ namespace GCodeParser
             // Parse
             // look at first char, if invalid 
             string firstChar = line.Substring(0, 1);
+            firstChar.ToUpper();
+
+            if (firstChar.Equals("("))  // Comments are in ()
+            {
+                return new ParsedCommand(command, line);
+            }
+
             if (_validCommandPrefixes.Contains(firstChar))
             {
                 command = firstChar;

@@ -15,7 +15,7 @@ namespace GCodeParser
             kernel.Load(Assembly.GetExecutingAssembly());
             var fileHandler = kernel.Get<IFileHandler>();
 
-            fileHandler.ProcessFile(filePath);
+            var output = fileHandler.ProcessFile(filePath); 
 
             Console.ReadLine(); // Pause at end
         }

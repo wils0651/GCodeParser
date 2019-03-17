@@ -1,7 +1,10 @@
-﻿namespace GCodeParser.Interfaces
+﻿using GCodeParser.Models;
+using System.Collections.Generic;
+
+namespace GCodeParser.Interfaces
 {
     public interface IFileHandler
     {
-        void ProcessFile(string filePath);
+        List<ParsedCommand> ProcessFile(string filePath);
     }
 }

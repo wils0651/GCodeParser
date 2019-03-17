@@ -1,5 +1,7 @@
 ﻿using GCodeParser.Interfaces;
+using GCodeParser.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace GCodeParser
@@ -7,38 +9,32 @@ namespace GCodeParser
     public class FileHandler : IFileHandler
     {
         private ICommandParser _parser;
+        private List<ParsedCommand> _commandList;
+        private List<string> _unrecognizedCommands;
 
         public FileHandler(ICommandParser commandParser)
         {
             _parser = commandParser;
+            _commandList = new List<ParsedCommand>();
+            _unrecognizedCommands = new List<string>();
         }
-        public void ProcessFile(string filePath)
-        {
 
+        public List<ParsedCommand> ProcessFile(string filePath)
+        {
             try
             {   // Open the text file using a stream reader.
                 using (StreamReader sr = new StreamReader(filePath))
                 {
                     string line;
-                    int count = 0;
-                    // Read and display lines from the file until the end of 
-                    // the file is reached.
+                    int lineCount = 0;
+
                     while ((line = sr.ReadLine()) != null)
                     {
                         line.Trim();
-                        Console.WriteLine("Line " + count + ": " + line);
-                        count++;
-                        var parsedCommand = _parser.ParseCommand(line);
-                        Console.WriteLine("GCodeCommand: " + parsedCommand.GCodeCommand + "; ParameterString: " + parsedCommand.ParameterString);
-                        // Pass each line to parser
-                        while (!parsedCommand.GCodeCommand.Equals("NOP"))
-                        {
-                            parsedCommand = _parser.ParseCommand(parsedCommand.ParameterString);
-                            if (!parsedCommand.GCodeCommand.Equals("NOP"))
-                            {
-                                Console.WriteLine("SubParse GCodeCommand: " + parsedCommand.GCodeCommand + "; ParameterString: " + parsedCommand.ParameterString);
-                            }
-                        }
+                        Console.WriteLine("Line " + lineCount + ": " + line);
+                        lineCount++;
+
+                        ParseString(line);
                     }
                 }
             }
@@ -47,6 +43,55 @@ namespace GCodeParser
                 Console.WriteLine("The file could not be read:");
                 Console.WriteLine(e.Message);
             }
+
+            OutputResults();
+            return _commandList;
+
         }
+
+        private void ParseString(string codeString)
+        {
+            var parsedCommand = _parser.ParseCommand(codeString);
+            CheckCommand(parsedCommand);
+        }
+
+        private void CheckCommand(ParsedCommand parsedCommand)
+        {
+            if (!parsedCommand.GCodeCommand.Equals("NOP"))
+            {
+                var parsedString = _parser.ParseCommand(parsedCommand.ParameterString);
+                if (!parsedString.GCodeCommand.Equals("NOP"))
+                {
+                    _commandList.Add(new ParsedCommand(parsedCommand.GCodeCommand, string.Empty));
+                    ParseString(parsedCommand.ParameterString);
+                }
+                else
+                {
+                    _commandList.Add(parsedCommand);
+                }
+            }
+            else
+            {
+                if (!parsedCommand.ParameterString.Trim().Equals(string.Empty))
+                {
+                    _unrecognizedCommands.Add(parsedCommand.ParameterString);
+                }
+            }
+        }
+
+        private void OutputResults()
+        {
+            Console.WriteLine("\nProcessed Commands");
+            _commandList.ForEach(c => PrintCommand(c));
+
+            Console.WriteLine("\nUnrecognized Text");
+            _unrecognizedCommands.ForEach(uc => Console.WriteLine(uc));
+        }
+
+        private void PrintCommand(ParsedCommand parsedCommand)
+        {
+            Console.WriteLine($"Command: {parsedCommand.GCodeCommand}; Parameter String: {parsedCommand.ParameterString}");
+        }
+
     }
 }
