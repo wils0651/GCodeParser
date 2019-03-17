@@ -2,7 +2,7 @@
 
 namespace GCodeParser
 {
-    interface ICommandParser
+    public interface ICommandParser
     {
         ParsedCommand ParseCommand(string line);
     }
