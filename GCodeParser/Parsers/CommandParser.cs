@@ -4,7 +4,7 @@ using GCodeParser.Models;
 
 namespace GCodeParser
 {
-    class CommandParser : ICommandParser
+    public class CommandParser : ICommandParser
     {
         private HashSet<string> _validCommandPrefixes;
 
@@ -44,8 +44,11 @@ namespace GCodeParser
                     isNumeral = int.TryParse(character, out numeral);
                     if (isNumeral)
                     {
-                        command += character;
-                        characterCount++;
+                        if (characterCount > 1 && numeral != 0)
+                        {
+                            command += character;
+                            characterCount++;
+                        }
                     }
                 }
                 line = line.Substring(characterCount).Trim();

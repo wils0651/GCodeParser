@@ -2,6 +2,8 @@
 using System;
 using Ninject;
 using System.Reflection;
+using System.Collections.Generic;
+using GCodeParser.Models;
 
 namespace GCodeParser
 {
@@ -15,7 +17,10 @@ namespace GCodeParser
             kernel.Load(Assembly.GetExecutingAssembly());
             var fileHandler = kernel.Get<IFileHandler>();
 
-            var output = fileHandler.ProcessFile(filePath); 
+            List<ParsedCommand> parsedCommands = fileHandler.ProcessFile(filePath); 
+
+            // Interpret those parsed commands
+
 
             Console.ReadLine(); // Pause at end
         }

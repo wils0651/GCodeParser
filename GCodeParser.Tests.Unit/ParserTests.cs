@@ -10,57 +10,120 @@ namespace GCodeParser.Tests.Unit
         private const float zero = 0.0F;
 
         [Test]
-        public void RectilinearParser_ValidString_Success()
+        public void MoveParser_ValidString_Success()
         {
             // Setup
             string parameterString = " X2.4051 Y0.465";
 
-            IRectilinearParser parser = new RectilinearParser();
+            IMoveParser parser = new MoveParser();
 
             // Act
-            RectilinearMove result = parser.ParseMove(parameterString);
+            var result = parser.ParseMove(parameterString);
+
+            float x = result.TryGetValue('X', out float xResult) ? xResult : 0.0F;
+            float y = result.TryGetValue('Y', out float yResult) ? yResult : 0.0F;
+            float z = result.TryGetValue('Z', out float zResult) ? zResult : 0.0F;
+            float speed = result.TryGetValue('F', out float fResult) ? fResult : 0.0F;
 
             // Assert
-            Assert.That(result.X, Is.EqualTo(2.4051F));
-            Assert.That(result.Y, Is.EqualTo(0.465F));
-            Assert.That(result.Z, Is.EqualTo(zero));
-            Assert.That(result.Speed, Is.EqualTo(zero));
+            Assert.That(x, Is.EqualTo(2.4051F));
+            Assert.That(y, Is.EqualTo(0.465F));
+            Assert.That(z, Is.EqualTo(zero));
+            Assert.That(speed, Is.EqualTo(zero));
         }
 
         [Test]
-        public void RectilinearParser_ValidString2_Success()
+        public void MoveParser_ValidString2_Success()
         {
             // Setup
             string parameterString = " Z0.25";
 
-            IRectilinearParser parser = new RectilinearParser();
+            IMoveParser parser = new MoveParser();
 
             // Act
-            RectilinearMove result = parser.ParseMove(parameterString);
+            var result = parser.ParseMove(parameterString);
+
+            float x = result.TryGetValue('X', out float xResult) ? xResult : 0.0F;
+            float y = result.TryGetValue('Y', out float yResult) ? yResult : 0.0F;
+            float z = result.TryGetValue('Z', out float zResult) ? zResult : 0.0F;
+            float speed = result.TryGetValue('F', out float fResult) ? fResult : 0.0F;
 
             // Assert
-            Assert.That(result.X, Is.EqualTo(zero));
-            Assert.That(result.Y, Is.EqualTo(zero));
-            Assert.That(result.Z, Is.EqualTo(0.25F));
-            Assert.That(result.Speed, Is.EqualTo(zero));
+            Assert.That(x, Is.EqualTo(zero));
+            Assert.That(y, Is.EqualTo(zero));
+            Assert.That(z, Is.EqualTo(0.25F));
+            Assert.That(speed, Is.EqualTo(zero));
         }
 
         [Test]
-        public void RectilinearParser_ValidString3_Success()
+        public void MoveParser_ValidString3_Success()
         {
             // Setup
             string parameterString = "Z-0.05 F8";
 
-            IRectilinearParser parser = new RectilinearParser();
+            IMoveParser parser = new MoveParser();
 
             // Act
-            RectilinearMove result = parser.ParseMove(parameterString);
+            var result = parser.ParseMove(parameterString);
+
+            float x = result.TryGetValue('X', out float xResult) ? xResult : 0.0F;
+            float y = result.TryGetValue('Y', out float yResult) ? yResult : 0.0F;
+            float z = result.TryGetValue('Z', out float zResult) ? zResult : 0.0F;
+            float speed = result.TryGetValue('F', out float fResult) ? fResult : 0.0F;
 
             // Assert
-            Assert.That(result.X, Is.EqualTo(zero));
-            Assert.That(result.Y, Is.EqualTo(zero));
-            Assert.That(result.Z, Is.EqualTo(-0.05F));
-            Assert.That(result.Speed, Is.EqualTo(8.0F));
+            Assert.That(x, Is.EqualTo(zero));
+            Assert.That(y, Is.EqualTo(zero));
+            Assert.That(z, Is.EqualTo(-0.05F));
+            Assert.That(speed, Is.EqualTo(8.0F));
+        }
+
+        [Test]
+        public void CommandParser_ValidString_Success()
+        {
+            // Setup
+            string command = "G2 X2.4016 Y0.4564 I-0.1524 J0.0563 F12";
+
+            ICommandParser parser = new CommandParser();
+
+            // Act
+            var result = parser.ParseCommand(command);
+
+            // Assert
+            Assert.That(result.GCodeCommand, Is.EqualTo("G2"));
+            Assert.That(result.ParameterString, Is.EqualTo("X2.4016 Y0.4564 I-0.1524 J0.0563 F12"));
+        }
+
+        [Test]
+        public void CommandParser_Comment_NOP()
+        {
+            // Setup
+            string command = "(this is a comment)";
+
+            ICommandParser parser = new CommandParser();
+
+            // Act
+            var result = parser.ParseCommand(command);
+
+            // Assert
+            Assert.That(result.GCodeCommand, Is.EqualTo("NOP"));
+            Assert.That(result.ParameterString, Is.EqualTo("(this is a comment)"));
+        }
+
+        [Test]
+        public void CommandParser_MultipleCommands_Success()
+        {
+            // Setup
+            string command = "G20 G90 G40";
+
+            ICommandParser parser = new CommandParser();
+
+            // Act
+            var result = parser.ParseCommand(command);
+
+            // Assert
+            Assert.That(result.GCodeCommand, Is.EqualTo("G20"));
+            Assert.That(result.ParameterString, Is.EqualTo("G90 G40"));
         }
     }
 }

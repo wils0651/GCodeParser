@@ -4,22 +4,22 @@ using System.Collections.Generic;
 
 namespace GCodeParser.Parsers
 {
-    public class RectilinearParser : IRectilinearParser
+    public class MoveParser : IMoveParser
     {
         private Dictionary<char, float> _coordinateDictionary;
 
-        public RectilinearParser()
+        public MoveParser()
         {
             _coordinateDictionary = new Dictionary<char, float>();
         }
 
-        public RectilinearMove ParseMove(string parameters)
+        public Dictionary<char, float> ParseMove(string parameters)
         {
             parameters = parameters.Trim();
 
             if (string.IsNullOrWhiteSpace(parameters))
             {
-                throw new Exception("G0 Needs a parameter string");
+                return null;
             }
 
             var parameterCharacterArray = parameters.ToUpper().ToCharArray();
@@ -30,12 +30,9 @@ namespace GCodeParser.Parsers
                 position = ParseCoordinate(parameterCharacterArray, position);
             }
 
-            float x = _coordinateDictionary.TryGetValue('X', out float xResult) ? xResult : 0.0F;
-            float y = _coordinateDictionary.TryGetValue('Y', out float yResult) ? yResult : 0.0F;
-            float z = _coordinateDictionary.TryGetValue('Z', out float zResult) ? zResult : 0.0F;
-            float speed = _coordinateDictionary.TryGetValue('F', out float fResult) ? fResult : 0.0F;
+            
 
-            return new RectilinearMove(x, y, z, speed);
+            return _coordinateDictionary;
         }
 
         private int ParseCoordinate(char[] characters, int position)
