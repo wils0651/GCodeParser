@@ -2,13 +2,13 @@
 {
     public class RectilinearMove
     {
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Z { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
 
-        public float Speed { get; set; }
+        public double Speed { get; set; }
 
-        public RectilinearMove(float x, float y, float z, float speed)
+        public RectilinearMove(double x, double y, double z, double speed)
         {
             X = x;
             Y = y;

@@ -9,25 +9,25 @@ namespace GCodeParser
 
     public class Machine
     {
-        private const float zero = 0.0F;
+        private const double zero = 0.0;
 
-        float X { get; set; }
-        float Y { get; set; }
-        float Z { get; set; }
+        double X { get; set; }
+        double Y { get; set; }
+        double Z { get; set; }
 
-        float VelocityX { get; set; }
-        float VelocityY { get; set; }
-        float VelocityZ { get; set; }
+        double VelocityX { get; set; }
+        double VelocityY { get; set; }
+        double VelocityZ { get; set; }
 
-        float MaxVelocityX { get; set; }
-        float MaxVelocityY { get; set; }
-        float MaxVelocityZ { get; set; }
+        double MaxVelocityX { get; set; }
+        double MaxVelocityY { get; set; }
+        double MaxVelocityZ { get; set; }
 
-        float AccelerationX { get; set; }
-        float AccelerationY { get; set; }
-        float AccelerationZ { get; set; }
+        double AccelerationX { get; set; }
+        double AccelerationY { get; set; }
+        double AccelerationZ { get; set; }
 
-        float DurationSeconds { get; set; }
+        double DurationSeconds { get; set; }
 
         public Machine()
         {
@@ -42,12 +42,12 @@ namespace GCodeParser
             DurationSeconds = zero;
         }
 
-        public void AddTime(float timeInSeconds)
+        public void AddTime(double timeInSeconds)
         {
             DurationSeconds += timeInSeconds;
         }
 
-        public void UpdatePosition(float x, float y, float z)
+        public void UpdatePosition(double x, double y, double z)
         {
             X = x;
             Y = y;

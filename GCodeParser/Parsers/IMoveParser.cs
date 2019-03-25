@@ -4,6 +4,6 @@ namespace GCodeParser.Parsers
 {
     public interface IMoveParser
     {
-        Dictionary<char, float> ParseMove(string parameter);
+        Dictionary<char, double> ParseMove(string parameter);
     }
 }

@@ -6,14 +6,14 @@ namespace GCodeParser.Parsers
 {
     public class MoveParser : IMoveParser
     {
-        private Dictionary<char, float> _coordinateDictionary;
+        private Dictionary<char, double> _coordinateDictionary;
 
         public MoveParser()
         {
-            _coordinateDictionary = new Dictionary<char, float>();
+            _coordinateDictionary = new Dictionary<char, double>();
         }
 
-        public Dictionary<char, float> ParseMove(string parameters)
+        public Dictionary<char, double> ParseMove(string parameters)
         {
             parameters = parameters.Trim();
 
@@ -51,7 +51,7 @@ namespace GCodeParser.Parsers
                 position++;
             }
 
-            if (float.TryParse(coordinateValue, out float result))
+            if (double.TryParse(coordinateValue, out double result))
             {
                 _coordinateDictionary.Add(characters[initialPosition], result);
             }

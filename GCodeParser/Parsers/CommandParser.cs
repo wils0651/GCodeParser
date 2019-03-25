@@ -35,6 +35,7 @@ namespace GCodeParser
             if (_validCommandPrefixes.Contains(firstChar))
             {
                 command = firstChar;
+                string commandNumberString = string.Empty;
                 int characterCount = 1;
                 bool isNumeral = true;
                 while (isNumeral && characterCount < line.Length)
@@ -44,13 +45,14 @@ namespace GCodeParser
                     isNumeral = int.TryParse(character, out numeral);
                     if (isNumeral)
                     {
-                        if (characterCount > 1 && numeral != 0)
-                        {
-                            command += character;
-                            characterCount++;
-                        }
+                        commandNumberString += character;
+                        characterCount++;
                     }
                 }
+                int commandNumber;
+                var isCommandNumber = int.TryParse(commandNumberString, out commandNumber);
+                command += commandNumber;
+
                 line = line.Substring(characterCount).Trim();
             }
 

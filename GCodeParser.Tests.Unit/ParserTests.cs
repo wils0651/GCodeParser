@@ -7,7 +7,7 @@ namespace GCodeParser.Tests.Unit
     [TestFixture]
     public class ParserTests
     {
-        private const float zero = 0.0F;
+        private const double zero = 0.0;
 
         [Test]
         public void MoveParser_ValidString_Success()
@@ -20,14 +20,14 @@ namespace GCodeParser.Tests.Unit
             // Act
             var result = parser.ParseMove(parameterString);
 
-            float x = result.TryGetValue('X', out float xResult) ? xResult : 0.0F;
-            float y = result.TryGetValue('Y', out float yResult) ? yResult : 0.0F;
-            float z = result.TryGetValue('Z', out float zResult) ? zResult : 0.0F;
-            float speed = result.TryGetValue('F', out float fResult) ? fResult : 0.0F;
+            double x = result.TryGetValue('X', out double xResult) ? xResult : 0.0;
+            double y = result.TryGetValue('Y', out double yResult) ? yResult : 0.0;
+            double z = result.TryGetValue('Z', out double zResult) ? zResult : 0.0;
+            double speed = result.TryGetValue('F', out double fResult) ? fResult : 0.0;
 
             // Assert
-            Assert.That(x, Is.EqualTo(2.4051F));
-            Assert.That(y, Is.EqualTo(0.465F));
+            Assert.That(x, Is.EqualTo(2.4051));
+            Assert.That(y, Is.EqualTo(0.465));
             Assert.That(z, Is.EqualTo(zero));
             Assert.That(speed, Is.EqualTo(zero));
         }
@@ -43,15 +43,15 @@ namespace GCodeParser.Tests.Unit
             // Act
             var result = parser.ParseMove(parameterString);
 
-            float x = result.TryGetValue('X', out float xResult) ? xResult : 0.0F;
-            float y = result.TryGetValue('Y', out float yResult) ? yResult : 0.0F;
-            float z = result.TryGetValue('Z', out float zResult) ? zResult : 0.0F;
-            float speed = result.TryGetValue('F', out float fResult) ? fResult : 0.0F;
+            double x = result.TryGetValue('X', out double xResult) ? xResult : 0.0;
+            double y = result.TryGetValue('Y', out double yResult) ? yResult : 0.0;
+            double z = result.TryGetValue('Z', out double zResult) ? zResult : 0.0;
+            double speed = result.TryGetValue('F', out double fResult) ? fResult : 0.0;
 
             // Assert
             Assert.That(x, Is.EqualTo(zero));
             Assert.That(y, Is.EqualTo(zero));
-            Assert.That(z, Is.EqualTo(0.25F));
+            Assert.That(z, Is.EqualTo(0.25));
             Assert.That(speed, Is.EqualTo(zero));
         }
 
@@ -66,16 +66,16 @@ namespace GCodeParser.Tests.Unit
             // Act
             var result = parser.ParseMove(parameterString);
 
-            float x = result.TryGetValue('X', out float xResult) ? xResult : 0.0F;
-            float y = result.TryGetValue('Y', out float yResult) ? yResult : 0.0F;
-            float z = result.TryGetValue('Z', out float zResult) ? zResult : 0.0F;
-            float speed = result.TryGetValue('F', out float fResult) ? fResult : 0.0F;
+            double x = result.TryGetValue('X', out double xResult) ? xResult : 0.0;
+            double y = result.TryGetValue('Y', out double yResult) ? yResult : 0.0;
+            double z = result.TryGetValue('Z', out double zResult) ? zResult : 0.0;
+            double speed = result.TryGetValue('F', out double fResult) ? fResult : 0.0;
 
             // Assert
             Assert.That(x, Is.EqualTo(zero));
             Assert.That(y, Is.EqualTo(zero));
-            Assert.That(z, Is.EqualTo(-0.05F));
-            Assert.That(speed, Is.EqualTo(8.0F));
+            Assert.That(z, Is.EqualTo(-0.05));
+            Assert.That(speed, Is.EqualTo(8.0));
         }
 
         [Test]
@@ -124,6 +124,22 @@ namespace GCodeParser.Tests.Unit
             // Assert
             Assert.That(result.GCodeCommand, Is.EqualTo("G20"));
             Assert.That(result.ParameterString, Is.EqualTo("G90 G40"));
+        }
+
+        [Test]
+        public void CommandParser_LeadingZeros_Success()
+        {
+            // Setup
+            string command = "G02 X2.4016 Y0.4564 I-0.1524 J0.0563 F12";
+
+            ICommandParser parser = new CommandParser();
+
+            // Act
+            var result = parser.ParseCommand(command);
+
+            // Assert
+            Assert.That(result.GCodeCommand, Is.EqualTo("G2"));
+            Assert.That(result.ParameterString, Is.EqualTo("X2.4016 Y0.4564 I-0.1524 J0.0563 F12"));
         }
     }
 }

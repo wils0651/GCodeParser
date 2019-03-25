@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bindings.cs" />
+    <Compile Include="CommandInterpreter.cs" />
+    <Compile Include="DurationCalculator\LinearRapid.cs" />
+    <Compile Include="ICommandInterpreter.cs" />
     <Compile Include="Intepreters\G1.cs" />
     <Compile Include="Models\RectilinearMove.cs" />
     <Compile Include="Parsers\CommandParser.cs" />

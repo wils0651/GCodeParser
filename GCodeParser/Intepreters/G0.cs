@@ -23,10 +23,10 @@ namespace GCodeParser.Intepreters
         {
             var parsedMoveDict = _parser.ParseMove(parsedCommand.ParameterString);
 
-            float x = parsedMoveDict.TryGetValue('X', out float xResult) ? xResult : 0.0F;
-            float y = parsedMoveDict.TryGetValue('Y', out float yResult) ? yResult : 0.0F;
-            float z = parsedMoveDict.TryGetValue('Z', out float zResult) ? zResult : 0.0F;
-            float speed = parsedMoveDict.TryGetValue('F', out float fResult) ? fResult : 0.0F;
+            double x = parsedMoveDict.TryGetValue('X', out double xResult) ? xResult : 0.0;
+            double y = parsedMoveDict.TryGetValue('Y', out double yResult) ? yResult : 0.0;
+            double z = parsedMoveDict.TryGetValue('Z', out double zResult) ? zResult : 0.0;
+            double speed = parsedMoveDict.TryGetValue('F', out double fResult) ? fResult : 0.0;
 
             // TODO: Calculate duration
 
