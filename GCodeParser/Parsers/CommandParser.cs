@@ -22,7 +22,7 @@ namespace GCodeParser
             {
                 return new ParsedCommand(command, line);
             }
-            // Parse
+
             // look at first char, if invalid 
             string firstChar = line.Substring(0, 1);
             firstChar.ToUpper();

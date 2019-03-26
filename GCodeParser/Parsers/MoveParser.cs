@@ -7,14 +7,10 @@ namespace GCodeParser.Parsers
     public class MoveParser : IMoveParser
     {
         private Dictionary<char, double> _coordinateDictionary;
-
-        public MoveParser()
-        {
-            _coordinateDictionary = new Dictionary<char, double>();
-        }
-
+        
         public Dictionary<char, double> ParseMove(string parameters)
         {
+            _coordinateDictionary = new Dictionary<char, double>();
             parameters = parameters.Trim();
 
             if (string.IsNullOrWhiteSpace(parameters))
@@ -29,8 +25,6 @@ namespace GCodeParser.Parsers
             {
                 position = ParseCoordinate(parameterCharacterArray, position);
             }
-
-            
 
             return _coordinateDictionary;
         }

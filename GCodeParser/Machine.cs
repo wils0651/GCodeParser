@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GCodeParser
+﻿namespace GCodeParser
 {
 
-    public class Machine
+    public class Machine : IMachine
     {
         private const double zero = 0.0;
 
@@ -52,6 +46,11 @@ namespace GCodeParser
             X = x;
             Y = y;
             Z = z;
+        }
+
+        public double GetDuration()
+        {
+            return DurationSeconds;
         }
 
 

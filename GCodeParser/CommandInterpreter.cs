@@ -9,12 +9,12 @@ namespace GCodeParser
     public class CommandInterpreter : ICommandInterpreter
     {
         private readonly Dictionary<string, IGCodeInterpreter> _interpreters;
-        private Machine _machine;
+        private IMachine _machine;
 
-        public CommandInterpreter(IGCodeInterpreter[] gCodeInterpreters, Machine machine)
+        public CommandInterpreter(IGCodeInterpreter[] gCodeInterpreters, IMachineStorage machineStore)
         {
             _interpreters = gCodeInterpreters.ToDictionary(gci => gci.GetInterpreterType(), gci => gci);
-            _machine = machine;
+            _machine = machineStore.GetMachine();
         }
 
 
@@ -26,8 +26,13 @@ namespace GCodeParser
                 if(!_interpreters.TryGetValue(command.GCodeCommand, out interpreter))
                 {
                     // TODO: Don't have this interpreter
+                    Console.WriteLine("No Interpreter for " + command.GCodeCommand);
                 }
-                //interpreter.InterpretGCode(command, )
+                else
+                {
+                    interpreter.InterpretGCode(command, _machine);
+                    Console.WriteLine("Interpreted " + command.GCodeCommand + ", total duration: " + _machine.GetDuration());
+                }
             }
         }
     }

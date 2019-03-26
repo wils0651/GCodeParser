@@ -19,7 +19,7 @@ namespace GCodeParser.Intepreters
             return GCODE_TYPE;
         }
 
-        public void InterpretGCode(ParsedCommand parsedCommand, Machine machine)
+        public void InterpretGCode(ParsedCommand parsedCommand, IMachine machine)
         {
             var parsedMoveDict = _parser.ParseMove(parsedCommand.ParameterString);
 
@@ -32,6 +32,9 @@ namespace GCodeParser.Intepreters
 
             // Update machine state
             machine.UpdatePosition(x, y, z);
+
+            //TODO:]
+            machine.AddTime(1.0);
         }
     }
 }

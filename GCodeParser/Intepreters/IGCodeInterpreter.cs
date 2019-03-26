@@ -5,6 +5,6 @@ namespace GCodeParser.Intepreters
     public interface IGCodeInterpreter
     {
         string GetInterpreterType();
-        void InterpretGCode(ParsedCommand parsedCommand, Machine machine);
+        void InterpretGCode(ParsedCommand parsedCommand, IMachine machine);
     }
 }

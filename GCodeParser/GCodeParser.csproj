@@ -61,6 +61,9 @@
     <Compile Include="DurationCalculator\LinearRapid.cs" />
     <Compile Include="ICommandInterpreter.cs" />
     <Compile Include="Intepreters\G1.cs" />
+    <Compile Include="IMachineStorage.cs" />
+    <Compile Include="IMachine.cs" />
+    <Compile Include="MachineStorage.cs" />
     <Compile Include="Models\RectilinearMove.cs" />
     <Compile Include="Parsers\CommandParser.cs" />
     <Compile Include="FileHandler.cs" />
