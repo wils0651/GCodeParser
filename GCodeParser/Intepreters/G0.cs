@@ -4,7 +4,7 @@ using GCodeParser.Parsers;
 
 namespace GCodeParser.Intepreters
 {
-    class G0 : IGCodeInterpreter
+    public class G0 : IGCodeInterpreter
     {
         private readonly IMoveParser _parser;
         public static string GCODE_TYPE = "G0";

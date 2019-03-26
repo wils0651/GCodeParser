@@ -10,11 +10,13 @@ namespace GCodeParser
     {
         private readonly Dictionary<string, IGCodeInterpreter> _interpreters;
         private IMachine _machine;
+        private ILog _log;
 
-        public CommandInterpreter(IGCodeInterpreter[] gCodeInterpreters, IMachineStorage machineStore)
+        public CommandInterpreter(IGCodeInterpreter[] gCodeInterpreters, IMachineStorage machineStore, ILog log)
         {
             _interpreters = gCodeInterpreters.ToDictionary(gci => gci.GetInterpreterType(), gci => gci);
             _machine = machineStore.GetMachine();
+            _log = log;
         }
 
 
@@ -25,8 +27,7 @@ namespace GCodeParser
                 IGCodeInterpreter interpreter;
                 if(!_interpreters.TryGetValue(command.GCodeCommand, out interpreter))
                 {
-                    // TODO: Don't have this interpreter
-                    Console.WriteLine("No Interpreter for " + command.GCodeCommand);
+                    _log.LogCommandWithNoInterpreter(command);
                 }
                 else
                 {

@@ -9,12 +9,15 @@ namespace GCodeParser
     public class FileHandler : IFileHandler
     {
         private ICommandParser _parser;
+        private ILog _log;
         private List<ParsedCommand> _commandList;
         private List<string> _unrecognizedCommands;
+        private readonly string[] stringSeparators = new string[] { ";" };
 
-        public FileHandler(ICommandParser commandParser)
+        public FileHandler(ICommandParser commandParser, ILog log)
         {
             _parser = commandParser;
+            _log = log;
             _commandList = new List<ParsedCommand>();
             _unrecognizedCommands = new List<string>();
         }
@@ -31,10 +34,16 @@ namespace GCodeParser
                     while ((line = sr.ReadLine()) != null)
                     {
                         line.Trim();
-                        Console.WriteLine("Line " + lineCount + ": " + line);
+                        //Console.WriteLine("Line " + lineCount + ": " + line);
                         lineCount++;
 
-                        ParseString(line);
+                        // Split on ";"
+                        String[] splitLine = line.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+
+                        foreach (var theLine in splitLine)
+                        {
+                            ParseString(theLine);
+                        }
                     }
                 }
             }
@@ -44,7 +53,7 @@ namespace GCodeParser
                 Console.WriteLine(e.Message);
             }
 
-            OutputResults();
+            //OutputResults();
             return _commandList;
 
         }
@@ -74,7 +83,8 @@ namespace GCodeParser
             {
                 if (!parsedCommand.ParameterString.Trim().Equals(string.Empty))
                 {
-                    _unrecognizedCommands.Add(parsedCommand.ParameterString);
+                    //_unrecognizedCommands.Add(parsedCommand.ParameterString);
+                    _log.LogUnrecognizedText(parsedCommand.ParameterString);
                 }
             }
         }
