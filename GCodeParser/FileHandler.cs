@@ -12,7 +12,6 @@ namespace GCodeParser
         private ILog _log;
         private List<ParsedCommand> _commandList;
         private List<string> _unrecognizedCommands;
-        private readonly string[] stringSeparators = new string[] { ";" };
 
         public FileHandler(ICommandParser commandParser, ILog log)
         {
@@ -34,11 +33,10 @@ namespace GCodeParser
                     while ((line = sr.ReadLine()) != null)
                     {
                         line.Trim();
-                        //Console.WriteLine("Line " + lineCount + ": " + line);
                         lineCount++;
 
-                        // Split on ";"
-                        String[] splitLine = line.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+                        string[] stringSeparators = new string[] { ";" };   // Split on ";"
+                        string[] splitLine = line.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
 
                         foreach (var theLine in splitLine)
                         {
@@ -53,7 +51,6 @@ namespace GCodeParser
                 Console.WriteLine(e.Message);
             }
 
-            //OutputResults();
             return _commandList;
 
         }
@@ -83,25 +80,24 @@ namespace GCodeParser
             {
                 if (!parsedCommand.ParameterString.Trim().Equals(string.Empty))
                 {
-                    //_unrecognizedCommands.Add(parsedCommand.ParameterString);
                     _log.LogUnrecognizedText(parsedCommand.ParameterString);
                 }
             }
         }
 
-        private void OutputResults()
-        {
-            Console.WriteLine("\nProcessed Commands");
-            _commandList.ForEach(c => PrintCommand(c));
+        //private void OutputResults()
+        //{
+        //    Console.WriteLine("\nProcessed Commands");
+        //    _commandList.ForEach(c => PrintCommand(c));
 
-            Console.WriteLine("\nUnrecognized Text");
-            _unrecognizedCommands.ForEach(uc => Console.WriteLine(uc));
-        }
+        //    Console.WriteLine("\nUnrecognized Text");
+        //    _unrecognizedCommands.ForEach(uc => Console.WriteLine(uc));
+        //}
 
-        private void PrintCommand(ParsedCommand parsedCommand)
-        {
-            Console.WriteLine($"Command: {parsedCommand.GCodeCommand}; Parameter String: {parsedCommand.ParameterString}");
-        }
+        //private void PrintCommand(ParsedCommand parsedCommand)
+        //{
+        //    Console.WriteLine($"Command: {parsedCommand.GCodeCommand}; Parameter String: {parsedCommand.ParameterString}");
+        //}
 
     }
 }

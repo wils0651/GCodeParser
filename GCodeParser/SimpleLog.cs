@@ -45,7 +45,7 @@ namespace GCodeParser
             var retVal = new List<string>();
             return commandAndCount
                 .OrderBy(c => c.Key)
-                .OrderBy(c => c.Value)
+                .OrderByDescending(c => c.Value)
                 .Select(c => c.Key.ToString() + ": " + c.Value.ToString())
                 .ToArray();
         }

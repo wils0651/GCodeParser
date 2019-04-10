@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GCodeParser.DurationCalculator
 {
-    public static class LinearRapid
+    public static class LinearMoves
     {
         public static double MoveTime(Machine machine, double xFinal, double yFinal, double zFinal)
         {
@@ -18,17 +14,17 @@ namespace GCodeParser.DurationCalculator
         }
 
         // Gets the distance to get to max velocity
-        private static double GetAccelerationDistance(double initialVelocity, double maxVelocity, double acceleration)
+        private static double GetDistanceWhileAccerlerating(double initialVelocity, double maxVelocity, double acceleration)
         {
             return (maxVelocity - initialVelocity) * (maxVelocity + initialVelocity) / 2 * acceleration;
         }
 
-        private static double GetAcceleratingTime(double initialVelocity, double maxVelocity, double distance)
+        private static double GetTimeWhileAccelerating(double initialVelocity, double maxVelocity, double distance)
         {
             return distance * 2 / (maxVelocity + initialVelocity);
         }
 
-        private static double GetConstantVelocityTime(double velocity, double distance)
+        private static double GetTimeConstantVelocity(double velocity, double distance)
         {
             return distance / velocity;
         }
