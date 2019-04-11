@@ -5,23 +5,23 @@
     {
         private const double zero = 0.0;
 
-        double X { get; set; }
-        double Y { get; set; }
-        double Z { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
 
-        double VelocityX { get; set; }
-        double VelocityY { get; set; }
-        double VelocityZ { get; set; }
+        public double VelocityX { get; set; }
+        public double VelocityY { get; set; }
+        public double VelocityZ { get; set; }
 
-        double MaxVelocityX { get; set; }
-        double MaxVelocityY { get; set; }
-        double MaxVelocityZ { get; set; }
+        public double MaxVelocityX { get; set; }
+        public double MaxVelocityY { get; set; }
+        public double MaxVelocityZ { get; set; }
 
-        double AccelerationX { get; set; }
-        double AccelerationY { get; set; }
-        double AccelerationZ { get; set; }
+        public double AccelerationX { get; set; }
+        public double AccelerationY { get; set; }
+        public double AccelerationZ { get; set; }
 
-        double DurationSeconds { get; set; }
+        public double DurationSeconds { get; set; }
 
         public Machine()
         {

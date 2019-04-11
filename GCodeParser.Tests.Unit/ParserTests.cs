@@ -135,7 +135,7 @@ namespace GCodeParser.Tests.Unit
             ICommandParser parser = new CommandParser();
 
             // Act
-            var result = parser.ParseCommand(command);
+            ParsedCommand result = parser.ParseCommand(command);
 
             // Assert
             Assert.That(result.GCodeCommand, Is.EqualTo("G2"));
