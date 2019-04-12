@@ -63,9 +63,9 @@
     <Compile Include="Interfaces\ICommandInterpreter.cs" />
     <Compile Include="Interfaces\ILog.cs" />
     <Compile Include="Intepreters\G1.cs" />
-    <Compile Include="IMachineStorage.cs" />
     <Compile Include="Interfaces\IMachine.cs" />
-    <Compile Include="MachineStorage.cs" />
+    <Compile Include="Interfaces\IMachineInitializer.cs" />
+    <Compile Include="MachineInitializer.cs" />
     <Compile Include="Models\RectilinearMove.cs" />
     <Compile Include="Parsers\CommandParser.cs" />
     <Compile Include="FileHandler.cs" />

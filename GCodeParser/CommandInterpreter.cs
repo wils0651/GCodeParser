@@ -12,10 +12,10 @@ namespace GCodeParser
         private IMachine _machine;
         private ILog _log;
 
-        public CommandInterpreter(IGCodeInterpreter[] gCodeInterpreters, IMachineStorage machineStore, ILog log)
+        public CommandInterpreter(IGCodeInterpreter[] gCodeInterpreters, IMachine machine, ILog log)
         {
             _interpreters = gCodeInterpreters.ToDictionary(gci => gci.GetInterpreterType(), gci => gci);
-            _machine = machineStore.GetMachine();
+            _machine = machine;
             _log = log;
         }
 

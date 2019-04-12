@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCodeParser", "GCodeParser\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCodeParser.Tests.Unit", "GCodeParser.Tests.Unit\GCodeParser.Tests.Unit.csproj", "{C37B6A3F-6418-4A4D-8D8A-66AD05BDB370}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCodeParser.Tests.Integration", "GCodeParser.Test.Integration\GCodeParser.Tests.Integration.csproj", "{DE9AEE42-591D-48AD-A22F-D9F7C158A5FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C37B6A3F-6418-4A4D-8D8A-66AD05BDB370}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C37B6A3F-6418-4A4D-8D8A-66AD05BDB370}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C37B6A3F-6418-4A4D-8D8A-66AD05BDB370}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE9AEE42-591D-48AD-A22F-D9F7C158A5FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE9AEE42-591D-48AD-A22F-D9F7C158A5FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE9AEE42-591D-48AD-A22F-D9F7C158A5FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE9AEE42-591D-48AD-A22F-D9F7C158A5FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

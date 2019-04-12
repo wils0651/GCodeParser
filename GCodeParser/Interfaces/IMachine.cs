@@ -20,6 +20,8 @@
 
         double DurationSeconds { get; set; }
 
+        double FeedRate { get; set; }
+
         void AddTime(double timeInSeconds);
         void UpdatePosition(double x, double y, double z);
         double GetDuration();

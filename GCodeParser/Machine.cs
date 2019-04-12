@@ -23,6 +23,8 @@
 
         public double DurationSeconds { get; set; }
 
+        public double FeedRate { get; set; }
+
         public Machine()
         {
             X = zero;
