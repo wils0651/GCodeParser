@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DurationCalclator\LinearMoveTests.cs" />
     <Compile Include="InterpreterTests.cs" />
     <Compile Include="ParserTests.cs" />
     <Compile Include="Program.cs" />
