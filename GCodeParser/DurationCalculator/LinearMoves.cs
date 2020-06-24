@@ -17,7 +17,7 @@ namespace GCodeParser.DurationCalculator
             return (finalVelocity - initialVelocity) * (finalVelocity + initialVelocity) / 2 * acceleration;
         }
 
-        public static double GetTimeWhileAccelerating(double initialVelocity, double finalVelocity, double distance)
+        public static double GetTimeWhileAcceleratingToVelocity(double initialVelocity, double finalVelocity, double distance)
         {
             if(initialVelocity == 0 && finalVelocity == 0)
             {
@@ -26,10 +26,47 @@ namespace GCodeParser.DurationCalculator
 
             if (initialVelocity == -finalVelocity)
             {
-                throw new ArgumentException("LinearMoves GetTimeWhileAccelerating initialVelocity == -maxVelocity");
+                throw new ArgumentException("LinearMoves GetTimeWhileAccelerating initialVelocity == -finalVelocity");
+            }
+            
+            var time = distance * 2 / (finalVelocity + initialVelocity);
+
+            if(time < 0)
+            {
+                time = 0;
+                // TODO: Throw an exception
             }
 
-            return distance * 2 / (finalVelocity + initialVelocity);
+            return time;
+        }
+
+        public static double GetTimeWhileAcceleratingToFinalVelocity(double initialVelocity, double finalVelocity, double acceleration)
+        {
+            if (initialVelocity == 0 && finalVelocity == 0)
+            {
+                throw new ArgumentException("LinearMoves GetTimeWhileAccelerating zero intial and final velocity");
+            }
+
+            var time = (finalVelocity - initialVelocity) / acceleration;
+
+            if (time < 0)
+            {
+                time = 0;
+                // TODO: Throw an exception
+            }
+
+            return time;
+        }
+
+        public static double GetTimeWhileAcceleratingOverDistance(double initialVelocity, double acceleration, double distance)
+        {
+            // TODO: arg validation?
+            var time1 = (-1.0 * initialVelocity + Math.Sqrt(initialVelocity * initialVelocity + 2 * acceleration * distance)) / acceleration;
+            var time2 = (-1.0 * initialVelocity - Math.Sqrt(initialVelocity * initialVelocity + 2 * acceleration * distance)) / acceleration;
+
+            //TODO: pick the right time
+
+            return time1;
         }
 
         public static double GetTimeConstantVelocity(double velocity, double distance)
@@ -44,23 +81,30 @@ namespace GCodeParser.DurationCalculator
                 throw new ArgumentException("LinearMoves GetTimeConstantVelocity signs do not match");
             }
 
-            return distance / velocity;
+            var time = distance / velocity;
+
+            if (time < 0)
+            {
+                time = 0;
+            }
+
+            return time;
         }
 
         public static double GetMaxVelocityOverDistance(double initialVelocity, double distance, double acceleration)
         {
-            double term1 = initialVelocity * initialVelocity + acceleration * 2 * distance;
+            double term1 = initialVelocity * initialVelocity + acceleration * 2.0 * distance;
             return Math.Sqrt(term1);
         }
 
         public static double LinearMoveTime(
             double currentLocation,
             double currentVelocity,
-            double finalVelocity,
-            double acceleration,
+            double maxSpeed,
+            double accelerationRate,
             double endLocation)
         {
-            double timeMoving = 0;
+            double timeMoving = 0.0;
             double moveDistance = endLocation - currentLocation;
 
             if (Math.Abs(moveDistance) < MOVE_THRESHOLD)
@@ -69,25 +113,33 @@ namespace GCodeParser.DurationCalculator
             }
 
             int moveDirection = moveDistance > 0 ? 1 : -1;
-            acceleration = moveDirection * acceleration;
-            finalVelocity = moveDirection * finalVelocity;
+            var acceleration = moveDirection * accelerationRate;
+            var finalVelocity = moveDirection * maxSpeed;
 
+            //double distanceToFullVelocity = GetDistanceWhileAccerlerating(currentVelocity, maxSpeed, accelerationRate);
             double distanceToFullVelocity = GetDistanceWhileAccerlerating(currentVelocity, finalVelocity, acceleration);
 
             // Do we get to max speed?
-            if (moveDirection * moveDistance > moveDirection * distanceToFullVelocity)
+            if (Math.Abs(moveDistance) > Math.Abs(distanceToFullVelocity))
             {
                 // If yes, what distance
                 //  And, what remaining distance
-                double remainingDistance = moveDistance - distanceToFullVelocity;
+                double remainingDistance = Math.Abs(moveDistance) - Math.Abs(distanceToFullVelocity);
                 //  And total time
-                timeMoving += GetTimeWhileAccelerating(currentVelocity, finalVelocity, distanceToFullVelocity);
-                timeMoving += GetTimeConstantVelocity(finalVelocity, remainingDistance);
+                timeMoving = GetTimeWhileAcceleratingToVelocity(currentVelocity, maxSpeed, distanceToFullVelocity);
+                timeMoving += GetTimeConstantVelocity(maxSpeed, remainingDistance);
             }
             else
             {
                 // If no, what time
-                timeMoving += GetTimeWhileAccelerating(currentVelocity, finalVelocity, moveDistance);
+                //timeMoving += GetTimeWhileAcceleratingToVelocity(currentVelocity, maxSpeed, moveDistance);
+                //timeMoving = GetTimeWhileAcceleratingToFinalVelocity(currentVelocity, finalVelocity, acceleration);
+                timeMoving = GetTimeWhileAcceleratingOverDistance(currentLocation, acceleration, moveDistance);
+            }
+
+            if(timeMoving < 0)
+            {
+                timeMoving = 0;
             }
 
             return timeMoving;

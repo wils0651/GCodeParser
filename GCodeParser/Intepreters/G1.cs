@@ -88,6 +88,11 @@ namespace GCodeParser.Intepreters
 
         private double CheckTimesAndReturnAverage(HashSet<double> times)
         {
+            if(times == null || times.Count() == 0)
+            {
+                return 0.0;
+            }
+
             var max = times.Max();
             var min = times.Min();
 
@@ -119,10 +124,13 @@ namespace GCodeParser.Intepreters
             double componentMaxVelocity = feedRate * vectorComponentFraction;
             double componentAcceleration = acceleration * vectorComponentFraction;
 
+            var velocityDirection = Math.Round(vectorComponentFraction / Math.Abs(vectorComponentFraction));
+
             // component speed at feed rate will need to be checked against max velocity
-            if (componentMaxVelocity > maxVelocity)
+            if (Math.Abs(componentMaxVelocity) > maxVelocity)
             {
                 //Console.WriteLine($"Too fast !!! Feed Rate: {feedRate}; Max Velocity: {maxVelocity}; Component Max Velocity {componentMaxVelocity}");
+                componentMaxVelocity = velocityDirection * maxVelocity;
             }
 
             return LinearMoves.LinearMoveTime(
